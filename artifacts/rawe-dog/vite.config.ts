@@ -72,6 +72,15 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+    // Off Replit there's no platform router joining the frontend and API
+    // server on one port, so proxy /api ourselves for local dev.
+    ...(process.env.REPL_ID === undefined
+      ? {
+          proxy: {
+            '/api': process.env.API_PROXY_TARGET || 'http://localhost:8080',
+          },
+        }
+      : {}),
   },
   preview: {
     port,
